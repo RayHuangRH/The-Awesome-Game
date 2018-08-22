@@ -54,10 +54,10 @@ public class Character extends Pane {
         body = new Rectangle(this.getTranslateX() + 13, this.getTranslateY() + 5, 40, 27);
         leftSide = new Rectangle(this.getTranslateX() + 3, this.getTranslateY() + 18, 10, 14);
         rightSide = new Rectangle(this.getTranslateX() + 53, this.getTranslateY() + 18, 10, 14);
-        head.setFill(Color.TRANSPARENT);
-        body.setFill(Color.TRANSPARENT);
-        leftSide.setFill(Color.TRANSPARENT);
-        rightSide.setFill(Color.TRANSPARENT);
+        head.setFill(Color.GREEN);
+        body.setFill(Color.GREEN);
+        leftSide.setFill(Color.GREEN);
+        rightSide.setFill(Color.GREEN);
         collisionRects.add(head);
         collisionRects.add(body);
         collisionRects.add(leftSide);

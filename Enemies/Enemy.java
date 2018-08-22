@@ -33,6 +33,7 @@ public class Enemy extends Pane {
     public boolean alive = true;
     public int health;
     public int totalHealth;
+    public boolean overRun = false;
     
     public List<Rectangle> collisionRects;
     public boolean hasCollisionRects = false;
@@ -224,12 +225,12 @@ public class Enemy extends Pane {
                     return true;
                 }
             }
-        }
-        
-        for (Rectangle playerRect : player.getCollisionRects()) {
-            for (Rectangle enemyRect : this.collisionRects) {
-                if (playerRect.getBoundsInParent().intersects(enemyRect.getBoundsInParent())) {
-                    return true;
+        } else {
+            for (Rectangle playerRect : player.getCollisionRects()) {
+                for (Rectangle enemyRect : this.collisionRects) {
+                    if (playerRect.getBoundsInParent().intersects(enemyRect.getBoundsInParent())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -292,6 +293,10 @@ public class Enemy extends Pane {
     
     public boolean hasCollisionRects() {
         return hasCollisionRects;
+    }
+
+    public boolean doesOverRun() {
+        return overRun;
     }
     
     public ImageView getIV() {

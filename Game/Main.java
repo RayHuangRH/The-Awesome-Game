@@ -471,7 +471,7 @@ public class Main extends Application {
             }
         }
 
-        if (!enemy.playerColliding(player)) {
+        if (!enemy.playerColliding(player) || enemy.doesOverRun()) {
             enemy.move(player, scene.getWidth(), scene.getHeight());
         }
 

@@ -92,8 +92,8 @@ public class Level {
     public void fillBoss(List<Enemy> bosses) {
         //testing phase - we will decide bosses order eventually
         //bosses.add(new TKTimmy("file:src/Sprites/TKTimmyBasic.png", 3, 5, 190, 190));
-        bosses.add(new HomingBoss("file:src/Sprites/Redies.png", 3, 20, 66, 33, 2000,
-                "file:src/Sprites/HomingShot.png"));
+        //bosses.add(new HomingBoss("file:src/Sprites/Redies.png", 3, 20, 66, 33, 2000,
+                //"file:src/Sprites/HomingShot.png"));
         bosses.add(new ChargeBoss("file:src/Sprites/ChargeBoss.png", 3, 20, 176, 102, 10));
         bosses.add(new SpiderBoss("file:src/Sprites/SpiderBoss.png", 5, 20, 158, 240));
         bosses.add(new RandShotBoss("file:src/Sprites/ShotBoss.png", 5, 20, 258, 256, 50,
@@ -112,18 +112,18 @@ public class Level {
                 enemy = new WillyWorm("file:src/Sprites/BlueCannon.png", 1, 1, 28, 51, 2000,
                         "file:src/Sprites/CannonShot.png");//ranged
                 break;
-            case 8 :
+            case 7 :
                 enemy = new BasicShooter("file:src/Sprites/BlueCannon.png", 1, 1, 28, 51, 2000,
                         "file:src/Sprites/CannonShot.png"); //ranged
                 break;
-            case 7 : 
+            case 3 : 
                 enemy = new Licker("file:src/Sprites/CharlesSpriteSheet.png", 3, 1, 80, 80); //melee
                 break;
             case 2 :
                 enemy = new SpikeEnemy("file:src/Sprites/SpikeySpriteSheet.png", 3, 1, 71, 65, 
                         3000, "file:src/Sprites/Spikes.png"); //ranged
                 break;
-            case 1 :
+            case 8 :
                 enemy = new FourWayShooter("file:src/Sprites/Redies.png", 1, 1, 66, 33, 3000,
                 "file:src/Sprites/EnemyShot.png"); //ranged
                 //need to make new design
@@ -131,7 +131,7 @@ public class Level {
             case 6 :
                 enemy = new MrSnake("file:src/Sprites/SnakeSpriteSheet.png", 2, 1, 27, 35); //melee
                 break;
-            case 3 :
+            case 1 :
                 enemy = new DomsPinky("file:src/Sprites/Pinky.png", 3, 1, 67, 78); //melee
                 break;
             case 4 :

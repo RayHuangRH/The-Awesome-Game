@@ -41,16 +41,17 @@ public class SpiderBoss extends MeleeBoss {
         
         currentPauseTime = 3000;
         randLocationSet = false;
-        hasCollisionRects = true;
         ready = false;
+        overRun = true;
         
         collisionRects = new ArrayList();
         head = new Rectangle(this.getTranslateX() + 56, this.getTranslateY(), 52, 56);
-        body = new Rectangle(this.getTranslateX() + 24, this.getTranslateY() + 56, 120, 168);
+        body = new Rectangle(this.getTranslateX() + 24, this.getTranslateY() + 56, 112, 160);
         head.setFill(Color.TRANSPARENT);
         body.setFill(Color.TRANSPARENT);
         collisionRects.add(head);
         collisionRects.add(body);
+        hasCollisionRects = true;
     }
 
     public void move(Character player, double width, double height) {
@@ -61,9 +62,9 @@ public class SpiderBoss extends MeleeBoss {
                 ready = true;
             }
             this.moveY(-5, 240);
-            head.setX(this.getX() + 56);
-            head.setY(this.getY());
-            body.setX(this.getX() + 20);
+            head.setX(this.getX() + 53);
+            head.setY(this.getY() + 8);
+            body.setX(this.getX() + 23);
             body.setY(this.getY() + 52);
         }
         else {
@@ -76,8 +77,7 @@ public class SpiderBoss extends MeleeBoss {
                     int randX = (int) (Math.random() * 1100 + 10);
                     this.setX(randX);
                     this.setY(-250);
-                    double rotation = 180 - this.getRotate();
-                    this.setRotate(this.getRotate() + rotation);
+                    this.setRotate(180);
                     
                     for (Rectangle rect : collisionRects) {
                         rect.setRotate(180);
@@ -87,8 +87,7 @@ public class SpiderBoss extends MeleeBoss {
                     int randY = (int) (Math.random() * 545 + 10);
                     this.setX(-250);
                     this.setY(randY);
-                    double rotation = 90 - this.getRotate();
-                    this.setRotate(this.getRotate() + rotation);
+                    this.setRotate(90);
                     
                     for (Rectangle rect : collisionRects) {
                         rect.setRotate(90);
@@ -98,8 +97,7 @@ public class SpiderBoss extends MeleeBoss {
                     int randX = (int) (Math.random() * 1100 + 10);
                     this.setX(randX);
                     this.setY(970);
-                    double rotation = 360 - this.getRotate();
-                    this.setRotate(this.getRotate() + rotation);
+                    this.setRotate(360);
                     
                     for (Rectangle rect : collisionRects) {
                         rect.setRotate(360);
@@ -109,8 +107,7 @@ public class SpiderBoss extends MeleeBoss {
                     int randY = (int) (Math.random() * 545 + 10);
                     this.setX(1300);
                     this.setY(randY);
-                    double rotation = 270 - this.getRotate();
-                    this.setRotate(this.getRotate() + rotation);
+                    this.setRotate(270);
                     
                     for (Rectangle rect : collisionRects) {
                         rect.setRotate(270);
@@ -122,28 +119,28 @@ public class SpiderBoss extends MeleeBoss {
             
             switch(randomDirection) {
                 case 1 : this.moveY(8, height); 
-                    head.setX(this.getX() + 56);
-                    head.setY(this.getY() + 178);
-                    body.setX(this.getX() + 24);
-                    body.setY(this.getY() + 14);
+                    head.setX(this.getX() + 53);
+                    head.setY(this.getY() + 175);
+                    body.setX(this.getX() + 23);
+                    body.setY(this.getY() + 28);
                     break;
                 case 2 : this.moveX(12, width); 
-                    head.setX(this.getX() + 142);
+                    head.setX(this.getX() + 136);
                     head.setY(this.getY() + 92);
-                    body.setX(this.getX() - 2);
-                    body.setY(this.getY() + 36);
+                    body.setX(this.getX() + 10);
+                    body.setY(this.getY() + 39);
                     break;
                 case 3 : this.moveY(-8, height); 
-                    head.setX(this.getX() + 52);
+                    head.setX(this.getX() + 53);
                     head.setY(this.getY() + 8);
-                    body.setX(this.getX() + 24);
-                    body.setY(this.getY() + 60);
+                    body.setX(this.getX() + 23);
+                    body.setY(this.getY() + 52);
                     break;
                 case 4 : this.moveX(-12, width); 
                     head.setX(this.getX() - 34);
-                    head.setY(this.getY() + 90);
-                    body.setX(this.getX() + 40);
-                    body.setY(this.getY() + 34);
+                    head.setY(this.getY() + 92);
+                    body.setX(this.getX() + 36);
+                    body.setY(this.getY() + 40);
                     break;
             }
         }

@@ -1,11 +1,15 @@
 package Bosses;
 import Game.Character;
 import Game.SpriteAnimation;
+import java.util.ArrayList;
 
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+//need to make better code for collision rectangles for rotating enemies
 public class ChargeBoss extends MeleeBoss {
 
     SpriteAnimation bull;
@@ -28,6 +32,9 @@ public class ChargeBoss extends MeleeBoss {
     double vx;
     double vy;
     int speed;
+    
+    //collision rectangles
+    Rectangle body;
 
     public ChargeBoss(String img, int health, int coin, int width, int height, int speed) {
         super(img, health, coin, width, height, "MULLER THE BULL");
@@ -38,9 +45,13 @@ public class ChargeBoss extends MeleeBoss {
         iv.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
         getChildren().addAll(iv);
         this.speed = speed;
+        overRun = true;
         
-        //change below to true if collision rectangles are added
-        hasCollisionRects = false;
+        collisionRects = new ArrayList();
+        body = new Rectangle(this.getTranslateX() + 6, this.getTranslateY() + 28, 164, 44);
+        body.setFill(Color.TRANSPARENT);
+        collisionRects.add(body);
+        hasCollisionRects = true;
     }
 
     public void move(Character player, double width, double height) {
@@ -48,17 +59,33 @@ public class ChargeBoss extends MeleeBoss {
         
         long timeNow = System.currentTimeMillis();
         
-        //need to add collision rects and its rotation
-        if ((this.getX() <= 0 || this.getX() + 176 >= width) && charging) {
-            charging = false;
-            timeIndex = System.currentTimeMillis();
-            lock = false;
+        if (charging) {
+            if (this.getX() + 88 <= 0) {
+                charging = false;
+                timeIndex = System.currentTimeMillis();
+                lock = false;
+                this.setX(this.getX() + 20);
+            }
+            if (this.getX() + 88 >= width) {
+                charging = false;
+                timeIndex = System.currentTimeMillis();
+                lock = false;
+                this.setX(this.getX() - 20);
+            }
+            if (this.getY() + 51 <= 0) {
+                charging = false;
+                timeIndex = System.currentTimeMillis();
+                lock = false;
+                this.setY(this.getY() + 15);
+            }
+            if (this.getY() + 51 >= height) {
+                charging = false;
+                timeIndex = System.currentTimeMillis();
+                lock = false;
+                this.setY(this.getY() - 15);
+            }
         }
-        if ((this.getY() <= 0 || this.getY() + 176 >= height) && charging) {
-            charging = false;
-            timeIndex = System.currentTimeMillis();
-            lock = false;
-        }
+        
         if (!charging) {
             if (timeNow - stunTime >= timeIndex) {
                 charging = true;
@@ -69,11 +96,15 @@ public class ChargeBoss extends MeleeBoss {
             targetY = player.getY() - this.getY();
             angle = Math.atan2(targetY, targetX) * 180 / Math.PI;
             this.setRotate(angle);
+            for (Rectangle rect : collisionRects) {
+                rect.setRotate(angle);
+            }
             lock = true;
         }
-        if(charging) {
+        
+        if (charging) {
             vx = speed * (90 - Math.abs(angle)) / 90;
-            if(angle < 0) {
+            if (angle < 0) {
                 vy = -speed + Math.abs(vx);
             } else {
                 vy = speed - Math.abs(vx);
@@ -84,6 +115,11 @@ public class ChargeBoss extends MeleeBoss {
             this.y += (int)vy;
             this.healthPos();
         }
+        
         //create charged boolean to record if a successful charge has been completed?
+        
+        
+        body.setX(this.getX() + 6);
+        body.setY(this.getY() + 28);
     }
 }

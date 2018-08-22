@@ -1,11 +1,14 @@
 package Enemies;
 import Game.Character;
 import Game.SpriteAnimation;
+import java.util.ArrayList;
 
 //A.K.A Charles
 
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Licker extends MeleeEnemy {
@@ -18,6 +21,9 @@ public class Licker extends MeleeEnemy {
     private final Duration duration = Duration.millis(900);
     private final Animation animation;
     
+    //collision rectangles
+    Rectangle body;
+    
     public Licker(String img, int health, int coin, int width, int height) {
         super(img, health, coin, width, height);
         super.getChildren().remove(iv);
@@ -27,8 +33,11 @@ public class Licker extends MeleeEnemy {
         iv.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
         getChildren().addAll(iv);
         
-        //change below to true if collision rectangles are added
-        hasCollisionRects = false;    
+        collisionRects = new ArrayList();
+        body = new Rectangle(this.getTranslateX() + 24, this.getTranslateY() + 20, 32, 50);
+        body.setFill(Color.TRANSPARENT);
+        collisionRects.add(body);
+        hasCollisionRects = true;
     }
     
     public void hitView(Enemy enemy) {
@@ -37,7 +46,6 @@ public class Licker extends MeleeEnemy {
     
     public void move(Character player, double width, double height) {
         animation.play();
-        //X - 10 and Y - 30 is so it looks like Charles is aiming for middle of player
 	if (player.getX() - 10 > this.getX() && player.getY() - 30 == this.getY()) { //right
             charles.setOffset(0, 320);
             this.moveX(1, width);
@@ -75,5 +83,8 @@ public class Licker extends MeleeEnemy {
             this.moveX(1, width);
             this.moveY(1, height);
         }
+        
+        body.setX(this.getX() + 24);
+        body.setY(this.getY() + 20);
     }
 }

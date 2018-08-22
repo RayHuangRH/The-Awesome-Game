@@ -24,7 +24,6 @@ public class SpikeEnemy extends RangedEnemy {
     }
     
     public void move(Character player, double width, double height) {
-        //y - 20 is so it looks like Spikey is aiming for middle of player
 	if (player.getX() > this.getX() && player.getY() - 20 == this.getY()) { //right
             this.setCharacterView(3, 194);
             this.moveX(1, width);

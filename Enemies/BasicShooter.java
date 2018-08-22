@@ -1,14 +1,17 @@
 package Enemies;
 import Game.Character;
 import Game.SpriteAnimation;
+import Projectiles.Projectile;
+import java.util.ArrayList;
 
 //A.K.A Cannon
 
-import Projectiles.Projectile;
 import java.util.List;
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class BasicShooter extends RangedEnemy {
@@ -22,6 +25,7 @@ public class BasicShooter extends RangedEnemy {
     private final Animation animation;
     
     int angularDir = 270;
+    Rectangle body;
     
     public BasicShooter(String img, int health, int coin, int width, int height, int shootSpeed, 
             String shotImg) {
@@ -33,49 +37,80 @@ public class BasicShooter extends RangedEnemy {
         iv.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
         getChildren().addAll(iv);
         
-        //change below to true if collision rectangles are added
-        hasCollisionRects = false;
+        collisionRects = new ArrayList();
+        body = new Rectangle(this.getTranslateX() + 4, this.getTranslateY() + 14, 19, 29);
+        body.setFill(Color.TRANSPARENT);
+        collisionRects.add(body);
+        hasCollisionRects = true;
     }
 
     public void move(Game.Character player, double width, double height) {
         animation.play();
         
-	if (player.getX() + 18 > this.getX() && player.getY() == this.getY()) { //right
-            double rotation = 270 - this.getRotate();
-            this.setRotate(this.getRotate() + rotation);
+	if (player.getX() + 18 > this.getX() && player.getY() - 15 == this.getY()) { //right
+            this.setRotate(270);
             this.moveX(1, width);
+            
+            for (Rectangle rect : collisionRects) {
+                rect.setRotate(270);
+            }
+            angularDir = 270;
         }
-        if (player.getX() + 18 < this.getX() && player.getY() == this.getY()) { //left
-            double rotation = 90 - this.getRotate();
-            this.setRotate(this.getRotate() + rotation);
+        if (player.getX() + 18 < this.getX() && player.getY() - 15 == this.getY()) { //left
+            this.setRotate(90);
             this.moveX(-1, width);
+            
+            for (Rectangle rect : collisionRects) {
+                rect.setRotate(90);
+            }
+            angularDir = 90;
         }
-        if (player.getX() + 18 == this.getX() && player.getY() > this.getY()) { //down
-            double rotation = 360 - this.getRotate();
-            this.setRotate(this.getRotate() + rotation);
+        if (player.getX() + 18 == this.getX() && player.getY() - 15 > this.getY()) { //down
+            this.setRotate(360);
             this.moveY(1, height);
+            for (Rectangle rect : collisionRects) {
+                rect.setRotate(360);
+            }
+            angularDir = 360;
         }
-        if (player.getX() + 18 == this.getX() && player.getY() < this.getY()) { //up
-            double rotation = 180 - this.getRotate();
-            this.setRotate(this.getRotate() + rotation);
+        if (player.getX() + 18 == this.getX() && player.getY() - 15 < this.getY()) { //up
+            this.setRotate(180);
             this.moveY(-1, height);
+            for (Rectangle rect : collisionRects) {
+                rect.setRotate(180);
+            }
+            angularDir = 180;
         }
 
-        if (player.getX() + 18 > this.getX() && player.getY() < this.getY()) { //quadrant1
+        if (player.getX() + 18 > this.getX() && player.getY() - 15 < this.getY()) { //quadrant1
             this.moveX(1, width);
             this.moveY(-1, height);
         }
-        if (player.getX() + 18 < this.getX() && player.getY() < this.getY()) { //quadrant2
+        if (player.getX() + 18 < this.getX() && player.getY() - 15 < this.getY()) { //quadrant2
             this.moveX(-1, width);
             this.moveY(-1, height);
         }
-        if (player.getX() + 18 < this.getX() && player.getY() > this.getY()) { //quadrant3
+        if (player.getX() + 18 < this.getX() && player.getY() - 15 > this.getY()) { //quadrant3
             this.moveX(-1, width);
             this.moveY(1, height);
         }
-        if (player.getX() + 18 > this.getX() && player.getY() > this.getY()) { //quadrant4
+        if (player.getX() + 18 > this.getX() && player.getY() - 15 > this.getY()) { //quadrant4
             this.moveX(1, width);
             this.moveY(1, height);
+        }
+        
+        if (angularDir == 270) {
+            body.setX(this.getX() + 7);
+            body.setY(this.getY() + 11);
+        } else if (angularDir == 360) {
+            body.setX(this.getX() + 3);
+            body.setY(this.getY() + 14);
+        } else if (angularDir == 90) {
+            body.setX(this.getX() + 4);
+            body.setY(this.getY() + 10);
+        } else {
+            body.setX(this.getX() + 5);
+            body.setY(this.getY() + 9);
         }
     }
     
@@ -87,41 +122,53 @@ public class BasicShooter extends RangedEnemy {
         if (dist.equals("up")) { //shoot up
             if (time < 0 || time > this.getShootSpeed()) {
                 cannon.setOffset(0, 52);
-                double rotation = 180 - this.getRotate();
-                this.setRotate(this.getRotate() + rotation);
-                angularDir = 90;
+                this.setRotate(180);
+                angularDir = 180;
                 createProjectile(0, -5, projectiles, gameRoot, shotIVFile, 20, 20, 1);
                 timeOfLastProjectile = timeNow;
+                
+                for (Rectangle rect : collisionRects) {
+                    rect.setRotate(180);
+                }
             }
 
         } else if (dist.equals("down")) { //shoot down
             if (time < 0 || time > this.getShootSpeed()) {
                 cannon.setOffset(0, 52);
-                double rotation = 360 - this.getRotate();
-                this.setRotate(this.getRotate() + rotation);
-                angularDir = 270;
+                this.setRotate(360);
+                angularDir = 360;
                 createProjectile(0, 5, projectiles, gameRoot, shotIVFile, 20, 20, 1);
                 timeOfLastProjectile = timeNow;
+                
+                for (Rectangle rect : collisionRects) {
+                    rect.setRotate(360);
+                }
             }
 
         } else if (dist.equals("left")) { //shoot left
             if (time < 0 || time > this.getShootSpeed()) {
                 cannon.setOffset(0, 52);
-                double rotation = 90 - this.getRotate();
-                this.setRotate(this.getRotate() + rotation);
-                angularDir = 180;
+                this.setRotate(90);
+                angularDir = 90;
                 createProjectile(-5, 0, projectiles, gameRoot, shotIVFile, 20, 20, 1);
                 timeOfLastProjectile = timeNow;
+                
+                for (Rectangle rect : collisionRects) {
+                    rect.setRotate(90);
+                }
             }
 
         } else if (dist.equals("right")) { //shoot right
             if (time < 0 || time > this.getShootSpeed()) {
                 cannon.setOffset(0, 52);
-                double rotation = 270 - this.getRotate();
-                this.setRotate(this.getRotate() + rotation);
-                angularDir = 360;
+                this.setRotate(270);
+                angularDir = 270;
                 createProjectile(5, 0, projectiles, gameRoot, shotIVFile, 20, 20, 1);
                 timeOfLastProjectile = timeNow;
+                
+                for (Rectangle rect : collisionRects) {
+                    rect.setRotate(270);
+                }
             }
         }
     }
@@ -129,15 +176,16 @@ public class BasicShooter extends RangedEnemy {
     public void createProjectile(int x, int y, List<Projectile> projectiles, Pane root, 
                                  String img, int width, int height, int dmg) {
         Projectile proj;
-        if (angularDir == 360) {
+        if (angularDir == 270) {
             proj = new Projectile(img, this.getX() + 22, this.getY() + 18, width, height, dmg);
-        } else if (angularDir == 270) {
-            proj = new Projectile(img, this.getX() + 4, this.getY() + 20, width, height, dmg); //
-        } else if (angularDir == 180) {
+        } else if (angularDir == 360) {
+            proj = new Projectile(img, this.getX() + 4, this.getY() + 20, width, height, dmg);
+        } else if (angularDir == 90) {
             proj = new Projectile(img, this.getX() - 12, this.getY() + 13, width, height, dmg);
         } else {
             proj = new Projectile(img, this.getX() + 4, this.getY() + 22, width, height, dmg);
         }
+        
         proj.setVelocityX(x);
         proj.setVelocityY(y);
         root.getChildren().addAll(proj);
